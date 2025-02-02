@@ -1,12 +1,30 @@
-from livros import *
+from estante import *
 from usuarios import *
-livros = []
+livros = [Livro('massa', 'louco', '2005', '40028922'), Livro('outro', 'maluco', '2010', '23102005')]
+usuarios = [Usuario('Eric', 'joseeric2310@gmail.com', '564922', 'Professor', 2), Usuario('Jorge', 'jorge2310@gmail.com', '345667', 'Estudante', 1)]
 print('Bem vindo! digite uma das opõçes para realizara a ação: ')
 while True:
-    menu = input('[1] Cadastrar livro\n[2]')
+    menu = input('[1]Gerenciar livros\n[2]Gerenciar usuários\n[3]Gerenciar empréstimos\n')
     if menu == '1':
-        livro1 = livro(input('Digite o nome do livro: '), input('Digite o autor do livro: '), input('Digite o ano de publicação livro: '), input('Digite o código do livro: '))
-        print()
-        livros.append(livro1)
-        for livro1 in livros:
-            print(livro1.titulo)
+        gerenciarLivros = input('\nEscolha uma opção para gerenciar os livros:\n[1]Cadastrar livro\n[2]Listar todos os livros\n[3]Pesquisar livro(s) por titulo ou autor\n')
+        if gerenciarLivros == '1':
+            livro = Livro(input('Digite o nome do livro: '), input('Digite o autor do livro: '), input('Digite o ano de publicação livro: '), input('Digite o código do livro: '))
+            livros.append(livro)
+            print('Livro cadastrado!')
+
+        elif gerenciarLivros == '2':
+            Livro.listarLivros(livros)
+        
+        elif gerenciarLivros == '3':
+            Livro.pesquisarLivros(input('Digite a sua pesquisa: '),livros)
+
+    elif menu == '2':
+        gerenciarUsuarios = input('Escolha uma opção para gerenciar os livros: \n[1]Cadastrar usuário\n[2]Listar usuários\n')
+        if gerenciarUsuarios == '1':
+            usuario = Usuario(input('Digite o nome do usuário: '), input('Digite o email do usuário: '), input('Digite a matrícula do usuário'))
+            usuarios.append(usuario)
+            print('estudante cadastrado(a)!')
+        elif gerenciarUsuarios == '2':
+            print('Nome - Email - Matrícula - Tipo de usuário - Livros alugados')
+            for usuario in usuarios:
+                Usuario.listarUsuarios(usuarios)
