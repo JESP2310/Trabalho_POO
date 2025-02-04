@@ -1,4 +1,4 @@
-from estante import *
+from Livros import *
 from usuarios import *
 livros = [Livro('massa', 'louco', '2005', '40028922'), Livro('outro', 'maluco', '2010', '23102005')]
 usuarios = [Usuario('Eric', 'joseeric2310@gmail.com', '564922', 'Professor', 2), Usuario('Jorge', 'jorge2310@gmail.com', '345667', 'Estudante', 1)]
@@ -10,18 +10,19 @@ while True:
         if gerenciarLivros == '1':
             livro = Livro(input('Digite o nome do livro: '), input('Digite o autor do livro: '), input('Digite o ano de publicação livro: '), input('Digite o código do livro: '))
             livros.append(livro)
-            print('Livro cadastrado!')
+            print('\nLivro cadastrado!\n')
 
         elif gerenciarLivros == '2':
             Livro.listarLivros(livros)
-        
-        elif gerenciarLivros == '3':
-            Livro.pesquisarLivros(input('Digite a sua pesquisa: '),livros)
 
+        elif gerenciarLivros == '3':
+            Livro.pesquisarLivros(input('Digite sua pesquisa: '), livros)
+            
     elif menu == '2':
         gerenciarUsuarios = input('Escolha uma opção para gerenciar os livros: \n[1]Cadastrar usuário\n[2]Listar usuários\n')
         if gerenciarUsuarios == '1':
-            usuario = Usuario(input('Digite o nome do usuário: '), input('Digite o email do usuário: '), input('Digite a matrícula do usuário'))
+            tipoUsuario = input('Digite o tipo de usuário a ser cadastrado:\n[1]Estudante')
+            usuario = Usuario(input('Digite o nome do usuário: '), input('Digite o email do usuário: '), input('Digite a matrícula do usuário'), input('Digite o tipo de usuário'))
             usuarios.append(usuario)
             print('estudante cadastrado(a)!')
         elif gerenciarUsuarios == '2':
