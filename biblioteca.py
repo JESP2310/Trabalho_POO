@@ -1,6 +1,6 @@
 from Livros import *
 from usuarios import *
-livros = [Livro('massa', 'louco', '2005', '40028922'), Livro('outro', 'maluco', '2010', '23102005')]
+estante = Estante([Livro('massa', 'louco', '2005', '40028922'), Livro('outro', 'maluco', '2010', '23102005')])
 usuarios = [Usuario('Eric', 'joseeric2310@gmail.com', '564922', 'Professor', 2), Usuario('Jorge', 'jorge2310@gmail.com', '345667', 'Estudante', 1)]
 print('Bem vindo! digite uma das opõçes para realizara a ação: ')
 while True:
@@ -9,14 +9,14 @@ while True:
         gerenciarLivros = input('\nEscolha uma opção para gerenciar os livros:\n[1]Cadastrar livro\n[2]Listar todos os livros\n[3]Pesquisar livro(s) por titulo ou autor\n')
         if gerenciarLivros == '1':
             livro = Livro(input('Digite o nome do livro: '), input('Digite o autor do livro: '), input('Digite o ano de publicação livro: '), input('Digite o código do livro: '))
-            livros.append(livro)
+            Estante.livros.append(livro)
             print('\nLivro cadastrado!\n')
 
         elif gerenciarLivros == '2':
-            Livro.listarLivros(livros)
+            Estante.listarLivros(estante)
 
         elif gerenciarLivros == '3':
-            Livro.pesquisarLivros(input('Digite sua pesquisa: '), livros)
+            Estante.pesquisarLivros(estante, input('Digite sua pesquisa: '))
             
     elif menu == '2':
         gerenciarUsuarios = input('Escolha uma opção para gerenciar os livros: \n[1]Cadastrar usuário\n[2]Listar usuários\n')
