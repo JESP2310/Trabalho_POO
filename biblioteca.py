@@ -1,15 +1,24 @@
 from Livros import *
 from usuarios import *
+from emprestimos import *
+
 class Biblioteca:
     def __init__(self):
         self.__livros = [Livro('massa', 'louco', '2005', 1), Livro('outro', 'maluco', '2010', 2)]
-        self.__users = [Usuario('Eric', 'joseeric2310@gmail.com', 1, 'Professor'), Usuario('Jorge', 'jorge2310@gmail.com', 2, 'Estudante')]
+        self.__users = [Professor('Eric', 'joseeric2310@gmail.com', 1), Estudante('Jorge', 'jorge2310@gmail.com', 2)]
+        self.__emprestimos = []
         self.__qtdLivros = 2
         self.__qtdmatriculas = 2
     
     def getLivros(self):
         return self.__livros
 
+    def getUsers(self):
+        return self.__users
+    
+    def getEmprestimos(self):
+        return self.__emprestimos
+    
     def listarLivros(self):
         if not self.__livros:
             print('Não há nenhum livro!')
@@ -35,6 +44,7 @@ class Biblioteca:
                     j = j+1
         if j == 0:
             print('Nenhum resultado encontrado!\n')
+        
     
     def cadastrarLivro(self):
             self.__qtdLivros += 1
@@ -60,16 +70,17 @@ class Biblioteca:
         if tipoUsuarios == '1':
             for usuario in self.__users:
                 if usuario.getTipo() == 'Estudante':
-                    print(f'{usuario.getNome()} - {usuario.getEmail()} - {usuario.getMatricula()} - {usuario.getTipo()} - {usuario.getLivrosAlugados()} Livros alugados')
+                    print(f'{usuario.getNome()} - {usuario.getEmail()} - {usuario.getMatricula()} - {usuario.getTipo()} - {usuario.getQtdLivrosAlugados()} Livros alugados')
         
         elif tipoUsuarios == '2':
             for usuario in self.__users:
                 if usuario.getTipo() == 'Professor':
-                    print(f'{usuario.getNome()} - {usuario.getEmail()} - {usuario.getMatricula()} - {usuario.getTipo()} - {usuario.getLivrosAlugados()} Livros alugados')
+                    print(f'{usuario.getNome()} - {usuario.getEmail()} - {usuario.getMatricula()} - {usuario.getTipo()} - {usuario.getQtdLivrosAlugados()} Livros alugados')
         
         elif tipoUsuarios == '3':
             for usuario in self.__users:
-                print(f'{usuario.getNome()} - {usuario.getEmail()} - {usuario.getMatricula()} - {usuario.getTipo()} - {usuario.getLivrosAlugados()} Livros alugados')
+                print(f'{usuario.getNome()} - {usuario.getEmail()} - {usuario.getMatricula()} - {usuario.getTipo()} - {usuario.getQtdLivrosAlugados()} Livros alugados')
+        
         
         else:
             print('Opção inválida!')
@@ -81,9 +92,10 @@ class Biblioteca:
                 self.__users.pop(cont)
                 print('Usuário deletado!')
                 break
-            else:
-                print('Matrícula inválida!')
             cont += 1
+        else:
+            print('Matrícula inválida!')
+        
         
     def menu(self):
         print('Bem vindo! digite uma das opõçes para realizar a ação: ')
@@ -113,7 +125,34 @@ class Biblioteca:
                 
                 elif gerenciarUsuarios == '3':
                     self.deletarUsuário(int(input('Digite a matrícula do usuário a ser deletado: ')))
+                
+                else:
+                    print('Opção inválida!')
             
+            
+            elif menu == '3':
+                gerenciarEmprestimos = input('Escolha uma opção para gerenciar os livros:\n[1]Realizar empréstimo\n[2]Devolver livro\n[3]Consultar empréstimos o usuário\n')
+                if gerenciarEmprestimos == '1':
+                    livro, Usuario = input('Digite o Titulo do livro que será emprestado: '), input('Digite a matrícula do usuário que vai pegar o livro: ')
+                    emprestado = None
+                    emprestadoPara = None
+                    for Livro in self.getLivros():
+                        if Livro.getTitulo() == livro:
+                            emprestado = Livro
+                            break
+                    else:
+                        print('Livro não encontrado!')
+                    
+                    for usuario in self.getUsers():
+                        if str(usuario.getMatricula()) == str(Usuario):
+                            emprestadoPara = usuario
+                            break
+                    else:
+                        print('Usuario não encontrado!')
+
+                    self.getEmprestimos().append(Emprestimo(emprestadoPara, emprestado))
+
+
             else:
                 print('Opção inválida!')
 

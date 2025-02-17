@@ -20,3 +20,10 @@ class Livro:
 
     def getDisponivel(self):
         return self.__disponivel
+
+    def setDisponibilidade(self):
+        if self.getDisponivel() == True:
+            self.__disponivel = False
+        else:
+            self.__disponivel = True
+        return self.__disponivel
