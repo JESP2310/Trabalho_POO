@@ -4,14 +4,14 @@ class Emprestimo:
         self.__livro = livro
 
         if not livro.getDisponivel():
-            print('Livro indisponível!')
+            print('Livro indisponível!\n')
             return
         
-        if usuario.getQtdLivrosAlugados() >= usuario.getLimiteEmprestimos():
-            print('O usuário está no limite de livros alugados!')
+        if not usuario.validarEmprestimo():
+            print('O usuário está no limite de livros alugados!\n')
             return
         
-        usuario.addLivroAlugado(livro)
+        usuario.addLivroAlugado(usuario, livro)
     
     def getUsuario(self):
         return self.__usuario
@@ -19,6 +19,3 @@ class Emprestimo:
     def getLivro(self):
         return self.__livro
     
-    def devolverLivro(self):
-        self.getLivro().disponivel = True
-        
