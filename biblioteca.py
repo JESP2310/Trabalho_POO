@@ -1,15 +1,20 @@
+#Importações dos outros arquivos para modularização
+
 from Livros import *
 from usuarios import *
 from emprestimos import *
 
+#Class biblioteca para o gerenciamento do sistema
 class Biblioteca:
     def __init__(self):
-        self.__livros = [Livro('massa', 'louco', '2005', 1), Livro('outro', 'maluco', '2010', 2)]
-        self.__users = [Professor('Eric', 'joseeric2310@gmail.com', '1'), Estudante('Jorge', 'jorge2310@gmail.com', '2')]
+        #Atributos privados para encapsulamento
+        self.__livros = []
+        self.__users = []
         self.__emprestimos = []
-        self.__qtdLivros = 2
-        self.__qtdmatriculas = 2
+        self.__qtdLivros = 0
+        self.__qtdmatriculas = 0
     
+    #Métodos get para acessar os atributos privados
     def getLivros(self):
         return self.__livros
 
@@ -19,6 +24,7 @@ class Biblioteca:
     def getEmprestimos(self):
         return self.__emprestimos
     
+    #Método para listar todos os livros da biblioteca
     def listarLivros(self):
         if not self.__livros:
             print('Não há nenhum livro!')
@@ -31,7 +37,11 @@ class Biblioteca:
                 print(f'{Livro.getTitulo(i)} - {Livro.getAutor(i)} - {Livro.getAno(i)} - {Livro.getCodigo(i)} - Indisponível')
         print('\n')
     
+    #Método para pesquisar livros por nome ou autor
     def pesquisarLivros(self, pesquisa):
+        if not self.__livros:
+            print('Não há nenhum livro!')
+            return
         j = 0
         print('\nTitulo - Autor - Ano - Código - Disponibilidade')
         for i in self.getLivros():
@@ -45,13 +55,14 @@ class Biblioteca:
         if j == 0:
             print('Nenhum resultado encontrado!\n')
         
-    
+    #Método para cadastrar um novo livro
     def cadastrarLivro(self):
             self.__qtdLivros += 1
             livro = Livro(input('Digite o nome do livro: '), input('Digite o autor do livro: '), input('Digite o ano de publicação livro: '), self.__qtdLivros)
             self.__livros.append(livro)
             print('\nLivro cadastrado!\n')
-    
+
+    #Método para cadastrar um novo usuário
     def cadastrarUsuário(self):
         self.__qtdmatriculas += 1
         tipoUsuario = input('Digite o tipo de usuário a ser cadastrado:\n[1]Estudante\n[2]Professor\n')
@@ -64,7 +75,11 @@ class Biblioteca:
             self.__users.append(usuario)
             print('Professor(a) cadastrado(a)!')
     
+    #Método para listar usuários com filtro para: Professor ou Estudante ou todos os usuários
     def listarUsuarios(self):
+        if not self.__users:
+            print('Não há nenhum usuário!')
+            return
         tipoUsuarios = input('Digite o tipo de usuarios que voce quer listar(Ordem de matrículas):\n[1]Estudantes\n[2]Professores\n[3]Todos os usuários\n')
         print('\nNome - Email - Matrícula - Tipo de usuário - Livros alugados')
         if tipoUsuarios == '1':
@@ -84,6 +99,7 @@ class Biblioteca:
         else:
             print('Opção inválida!')
     
+    #Método para deletar usuário por número de matrícula
     def deletarUsuário(self, usuarioMatricula):
         cont = 0
         for usuario in self.__users:
@@ -95,6 +111,7 @@ class Biblioteca:
         else:
             print('Matrícula inválida!')
         
+    #Método para devolver o livro para a biblioteca
     def devolverLivro(self, usuario, livro):
         UsuarioDevolver = None
         livroDevolver = None
@@ -121,14 +138,19 @@ class Biblioteca:
             if emprestimo.getLivro().getTitulo() == livroDevolver.getTitulo():
                 livroDevolver.setDisponibilidade()
                 break
-        
+        contador = 0
         AtualizarLivrosAlugados = UsuarioDevolver.getQtdLivrosAlugados()
         AtualizarLivrosAlugados = AtualizarLivrosAlugados - 1
         UsuarioDevolver.setQtdLivrosAlugados(AtualizarLivrosAlugados)
-        UsuarioDevolver.getLivrosAlugados().pop(-1)
+        for i in UsuarioDevolver.getLivrosAlugados():
+            if i.getTitulo() == livroDevolver.getTitulo():
+                break
+            contador += 1
+        UsuarioDevolver.getLivrosAlugados().pop(contador)
 
         print(f'Livro devolvido por {UsuarioDevolver.getNome()}\n')
 
+    #Método para listar os livros alugados de um usuário(pesquisar por matrícula)
     def listarLivrosAlugados(self, usuario):
         user = None
         for Usuario in self.getUsers():
@@ -140,10 +162,11 @@ class Biblioteca:
                 print(f'Livros alugados por {Usuario.getNome()}:')
         if user == None:
             print('Usuário não encontrado!\n')
+            return
         for livro in user.getLivrosAlugados():
-            print(livro.getTitulo())
+            print(f'{livro.getTitulo()} por {livro.getAutor()}')
             
-        
+    #Método para o menu com opções de gerenciamento
     def menu(self):
         print('Bem vindo! digite uma das opõçes para realizar a ação: ')
         while True:
@@ -189,8 +212,7 @@ class Biblioteca:
                             for usuario in self.getUsers():
                                 if str(usuario.getMatricula()) == str(Usuario):
                                     emprestadoPara = usuario
-                                    Emprestimo(emprestadoPara, emprestado)
-                                    emprestadoPara.getLivrosAlugados().pop(-1)
+                                    self.getEmprestimos().append(Emprestimo(emprestadoPara, emprestado))
                                     break
                             else:
                                 print('Usuario não encontrado!\n')
